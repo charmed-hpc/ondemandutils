@@ -37,13 +37,25 @@ classifiers=[
     "Programming Language :: Python :: 3.10",
 ]
 
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/charmed-hpc/ondemandutils/issues"
+
 [tool.poetry.dependencies]
 python = ">=3.8"
 pyyaml = "6.0.1"
 
+[tool.poetry.group.fmt.dependencies]
+black = "*"
+ruff = "*"
 
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/charmed-hpc/ondemandutils/issues"
+[tool.poetry.group.lint.dependencies]
+black = "*"
+codespell = "*"
+ruff = "*"
+
+[tool.poetry.group.unit.dependencies]
+pytest = "8.0.2"
+coverage = {version="*", extras=["toml"]}
 
 # Testing tools configuration
 [tool.coverage.run]
