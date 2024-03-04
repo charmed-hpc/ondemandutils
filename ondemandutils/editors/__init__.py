@@ -14,4 +14,5 @@
 
 """Editors for Open Ondemand configuration files."""
 
+from . import nginx_stage
 from . import ood_portal
