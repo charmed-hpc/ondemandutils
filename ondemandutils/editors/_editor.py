@@ -33,7 +33,7 @@ def dump(obj, file: Union[str, PathLike]) -> None:
         _logger.warning("Overwriting contents of %s file located at %s.", loc.name, loc)
 
     _logger.debug("Dumping YAML configuration into %s file located at %s.", loc.name, loc)
-    Path(file).write_text(yaml.dump(obj._register))
+    Path(file).write_text(yaml.dump(obj.dict()))
 
 
 def dumps(obj) -> str:
