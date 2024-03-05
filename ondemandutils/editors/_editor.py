@@ -24,44 +24,53 @@ import yaml
 _logger = logging.getLogger(__name__)
 
 
-def dump(obj, file: Union[str, PathLike]) -> None:
-    """Serialise configuration into file using the `.yaml()` method of the provided object.
+def header(msg: str) -> str:
+    """Generate header for YAML document file.
+
+    Args:
+        msg: Message to put into header.
+    """
+    return "#\n" + "".join(f"# {line}\n" for line in msg.splitlines()) + "#\n"
+
+
+def dump_base(content, file: Union[str, PathLike], marshaller):
+    """Dump configuration into file using provided marshalling function.
 
     Do not use this function directly.
     """
     if (loc := Path(file)).exists():
         _logger.warning("Overwriting contents of %s file located at %s.", loc.name, loc)
 
-    _logger.debug("Dumping YAML configuration into %s file located at %s.", loc.name, loc)
-    Path(file).write_text(yaml.dump(obj.dict()))
+    _logger.debug("Marshalling configuration into %s file located at %s.", loc.name, loc)
+    return loc.write_text(marshaller(content), encoding="ascii")
 
 
-def dumps(obj) -> str:
-    """Dump configuration into a string using the `.yaml()` method of the provided object.
+def dumps_base(content, marshaller) -> str:
+    """Dump configuration into Python string using provided marshalling function.
 
     Do not use this function directly.
     """
-    return obj.yaml()
+    return marshaller(content)
 
 
-def load_base(file: Union[str, PathLike], cls):
+def load_base(file: Union[str, PathLike], parser):
     """Load configuration from file using provided parsing function.
 
     Do not use this function directly.
     """
     if (file := Path(file)).exists():
         _logger.debug("Parsing contents of %s located at %s.", file.name, file)
-        config = file.read_text()
-        return cls.from_yaml(config)
+        config = file.read_text(encoding="ascii")
+        return parser(config)
     else:
         msg = "Unable to locate file"
         _logger.error(msg + " %s.", file)
         raise FileNotFoundError(msg + f" {file}")
 
 
-def loads_base(content: str, cls):
+def loads_base(content: str, parser):
     """Load configuration from Python String using provided parsing function.
 
     Do not use this function directly.
     """
-    return cls.from_yaml(content)
+    return parser(content)

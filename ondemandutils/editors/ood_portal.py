@@ -18,22 +18,36 @@ __all__ = ["dump", "dumps", "load", "loads", "edit"]
 
 import os
 from contextlib import contextmanager
+from datetime import datetime
 from functools import partial
 from typing import Union
 
 from ondemandutils.models import OODPortalConfig
 
-from ._editor import dump, dumps, load_base, loads_base
+from ._editor import dump_base, dumps_base, header, load_base, loads_base
 
-# Bind dump functions into module namespace.
-dump = dump
-dumps = dumps
 
-# Declare partials for load functions.
-load = partial(load_base, cls=OODPortalConfig)
-loads = partial(loads_base, cls=OODPortalConfig)
+def _marshaller(config: OODPortalConfig) -> str:
+    """Marshall `OODPortalConfig` object into an `ood_portal.yml` configuration file.
 
-# Documentation for module functions.
+    Args:
+        config: `OODPortalConfig` object to marshal into configuration file.
+    """
+    marshalled = header(f"`ood_portal.yml` generated at {datetime.now()} by ondemandutils.")
+    marshalled += "\n" + config.yaml()
+    return marshalled
+
+
+def _parser(config: str) -> OODPortalConfig:
+    """Parse `ood_portal.yml` configuration file into `OODPortalConfig` object.
+
+    Args:
+        config: Content of `ood_portal.yml` configuration file.
+    """
+    return OODPortalConfig.from_yaml(config)
+
+
+dump = partial(dump_base, marshaller=_marshaller)
 dump.__doc__ = """
 Serialise an `OODPortalConfig` object into a YAML document file.
 
@@ -42,6 +56,7 @@ Args:
     file: File to serialise `OODPortalConfig` object into.
 """
 
+dumps = partial(dumps_base, marshaller=_marshaller)
 dumps.__doc__ = """
 Serialise an `OODPortalConfig` object into a YAML document string.
 
@@ -49,6 +64,7 @@ Args:
     obj: `OODPortalConfig` object to serialise into a YAML document.
 """
 
+load = partial(load_base, parser=_parser)
 load.__doc__ = """
 Deserialise a YAML document file into an `OODPortalConfig` object. 
 
@@ -56,6 +72,7 @@ Args:
     file: `ood_portal.yml` file to deserialise into an `OODPortalConfig` object.
 """
 
+loads = partial(loads_base, parser=_parser)
 loads.__doc__ = """
 Deserialise a YAML document string into an `OODPortalConfig` object.
 
@@ -78,4 +95,4 @@ def edit(file: Union[str, os.PathLike]) -> OODPortalConfig:
         config = load(file=file)
 
     yield config
-    dump(obj=config, file=file)
+    dump(content=config, file=file)
