@@ -19,8 +19,6 @@ from os import PathLike
 from pathlib import Path
 from typing import Union
 
-import yaml
-
 _logger = logging.getLogger(__name__)
 
 

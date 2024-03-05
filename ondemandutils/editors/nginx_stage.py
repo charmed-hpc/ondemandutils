@@ -9,7 +9,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-"""Edit `nginx_stage.yml` configuration files"""
+"""Edit `nginx_stage.yml` configuration files."""
 
 __all__ = ["dump", "dumps", "load", "loads", "edit"]
 
@@ -63,7 +63,7 @@ Args:
 
 load = partial(load_base, parser=_parser)
 load.__doc__ = """
-Deserialise a YAML document file into an `NginxStageConfig` object. 
+Deserialise a YAML document file into an `NginxStageConfig` object.
 
 Args:
     file: `nginx_stage.yml` file to deserialise into an `NginxStageConfig` object.

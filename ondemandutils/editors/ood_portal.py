@@ -12,7 +12,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Edit ood_portal.yml files."""
+"""Edit `ood_portal.yml` configuration files."""
 
 __all__ = ["dump", "dumps", "load", "loads", "edit"]
 
@@ -66,7 +66,7 @@ Args:
 
 load = partial(load_base, parser=_parser)
 load.__doc__ = """
-Deserialise a YAML document file into an `OODPortalConfig` object. 
+Deserialise a YAML document file into an `OODPortalConfig` object.
 
 Args:
     file: `ood_portal.yml` file to deserialise into an `OODPortalConfig` object.
