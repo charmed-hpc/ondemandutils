@@ -84,9 +84,6 @@ class BaseModel(UserDict):
 
         super().__init__(obj, **kwargs)
 
-    def __repr__(self):
-        return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in self.items())})"
-
     def __or__(self, other):
         if not isinstance(other, type(self)):
             raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
