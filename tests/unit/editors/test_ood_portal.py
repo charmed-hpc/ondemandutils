@@ -94,7 +94,6 @@ dex:
   client_name: OnDemand
   client_secret: /etc/ood/dex/ondemand.secret
   client_redirect_uris: []
-  static_clients: []
   connectors:
     - type: ldap
       id: ldap
