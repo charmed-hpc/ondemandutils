@@ -19,7 +19,7 @@ import unittest
 from pathlib import Path
 
 from ondemandutils.editors import ood_portal
-from ondemandutils.models import OODPortalConfig, DexConfig
+from ondemandutils.models import DexConfig, OODPortalConfig
 
 example_ood_portal_yml = r"""#
 # `ood_portal.yml` generated at 2024-03-05 09:59:02.084563 by ondemandutils.
@@ -132,7 +132,7 @@ class TestDexConfigEditor(unittest.TestCase):
         Path("ood_portal.yaml").write_text(example_ood_portal_yml)
 
     def test_dex_config(self) -> None:
-        """Test setting a Dex service configuration in `ood_portal.yml`"""
+        """Test setting a Dex service configuration in `ood_portal.yml`."""
         dex_config = DexConfig()
         dex_config.http_port = 5556
         dex_config.tls_cert = "/var/snap/ondemand/common/tls.cert"
