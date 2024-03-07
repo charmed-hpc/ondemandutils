@@ -18,7 +18,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ondemandutils"
-version = "0.1.0"
+version = "0.2.0"
 description = "Utilities and APIs for orchestrating the Open Ondemand deployment lifecycle."
 repository = "https://github.com/charmed-hpc/ondemandutils"
 authors = ["Jason C. Nucciarone <nuccitheboss@ubuntu.com>"]
