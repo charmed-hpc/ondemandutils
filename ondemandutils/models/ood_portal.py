@@ -37,6 +37,25 @@ class OODPortalConfig(BaseModel):
     def __init__(self, **kwargs) -> None:
         super().__init__(validator=OODPortalOptions, **kwargs)
 
+    def __getitem__(self, key):
+        value = super().__getitem__(key)
+        if key == "dex":
+            return DexConfig(**value)
+
+        return value
+
+    def __setitem__(self, key, value):
+        if key == "dex" and not isinstance(value, DexConfig):
+            try:
+                v = value or {}
+                value = DexConfig(**v)
+            except AttributeError:
+                raise TypeError(
+                    f"Expected `{DexConfig.__name__}` for key '{key}', not {type(value)}."
+                )
+
+        super().__setitem__(key, value)
+
     @property
     def dex(self) -> DexConfig:
         """Get Dex IDP service configuration."""
