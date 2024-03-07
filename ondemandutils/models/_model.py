@@ -91,19 +91,19 @@ class BaseModel(UserDict):
         if not isinstance(other, type(self)):
             raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
 
-        super().__or__(other)
+        return super().__or__(other)
 
     def __ror__(self, other):
         if not isinstance(other, type(self)):
             raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
 
-        super().__ror__(other)
+        return super().__ror__(other)
 
     def __ior__(self, other):
         if not isinstance(other, type(self)):
             raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
 
-        super().__ior__(other)
+        return super().__ior__(other)
 
     @classmethod
     def from_dict(cls, dict_obj: Dict[str, Any]):

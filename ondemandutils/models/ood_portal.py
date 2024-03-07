@@ -14,6 +14,8 @@
 
 """Data models for the `ood_portal.yml` configuration file."""
 
+from typing import Any, Dict
+
 from ._model import BaseModel, assert_type, base_descriptors
 from ._options import DexOptions, OODPortalOptions
 
@@ -21,8 +23,8 @@ from ._options import DexOptions, OODPortalOptions
 class DexConfig(BaseModel):
     """Data model representing Dex configuration inside `ood_portal.yml`."""
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(validator=DexOptions, **kwargs)
+    def __init__(self, obj: Dict[str, Any] = None, /, **kwargs) -> None:
+        super().__init__(obj, **kwargs, validator=DexOptions)
 
 
 # Generate descriptors for accessing Dex configuration options.
@@ -34,8 +36,8 @@ for e in DexOptions:
 class OODPortalConfig(BaseModel):
     """Data model representing the `ood_portal.yml` configuration file."""
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(validator=OODPortalOptions, **kwargs)
+    def __init__(self, obj: Dict[str, Any] = None, /, **kwargs) -> None:
+        super().__init__(obj, **kwargs, validator=OODPortalOptions)
 
     def __getitem__(self, key):
         value = super().__getitem__(key)
@@ -59,7 +61,7 @@ class OODPortalConfig(BaseModel):
     @property
     def dex(self) -> DexConfig:
         """Get Dex IDP service configuration."""
-        return DexConfig(**self["dex"])
+        return self["dex"]
 
     @dex.setter
     @assert_type(value=DexConfig)

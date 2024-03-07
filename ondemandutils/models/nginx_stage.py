@@ -14,6 +14,8 @@
 
 """Data models for the `nginx_stage.yml` configuration file."""
 
+from typing import Any, Dict
+
 from ._model import BaseModel, base_descriptors
 from ._options import NginxStageOptions
 
@@ -21,8 +23,8 @@ from ._options import NginxStageOptions
 class NginxStageConfig(BaseModel):
     """Data model representing the `nginx_stage.yml` configuration file."""
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(validator=NginxStageOptions, **kwargs)
+    def __init__(self, obj: Dict[str, Any] = None, /, **kwargs) -> None:
+        super().__init__(obj, **kwargs, validator=NginxStageOptions)
 
 
 # Generate descriptors for accessing `nginx_stage.yml` configuration options.
