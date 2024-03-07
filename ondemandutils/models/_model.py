@@ -17,6 +17,7 @@
 import copy
 import inspect
 import json
+from collections import UserDict
 from functools import wraps
 from typing import Any, Callable, Dict
 
@@ -57,25 +58,23 @@ def base_descriptors(option: str):
     """
 
     def getter(self):
-        return self._register.get(option, None)
+        return self.get(option, None)
 
     def setter(self, value):
-        self._register[option] = value
+        self[option] = value
 
     def deleter(self):
-        try:
-            del self._register[option]
-        except KeyError:
-            pass
+        del self[option]
 
     return getter, setter, deleter
 
 
-class BaseModel:
+class BaseModel(UserDict):
     """Base class for Open Ondemand-related data models."""
 
-    def __init__(self, validator, **kwargs) -> None:
-        for k, v in kwargs.items():
+    def __init__(self, obj: Dict[str, Any] = None, /, *, validator, **kwargs) -> None:
+        obj = obj or {}
+        for k, v in {**obj, **kwargs}.items():
             if not hasattr(validator, k.upper()):
                 raise AttributeError(
                     f"Unrecognised configuration option {k}={v}. "
@@ -83,11 +82,10 @@ class BaseModel:
                     + ", ".join(e.name.lower() for e in validator)
                 )
 
-        self._register = kwargs
+        super().__init__(obj, **kwargs)
 
     def __repr__(self):
-        output = self._register
-        return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in output.items())})"
+        return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in self.items())})"
 
     @classmethod
     def from_dict(cls, dict_obj: Dict[str, Any]):
@@ -114,12 +112,12 @@ class BaseModel:
         deep copy, operations performed on the returned dictionary could cause unintended
         mutations in the internal register.
         """
-        return copy.deepcopy(self._register)
+        return copy.deepcopy(self.data)
 
     def json(self) -> str:
         """Get model as JSON object."""
-        return json.dumps(self._register)
+        return json.dumps(self.data)
 
     def yaml(self) -> str:
         """Get model as YAML document."""
-        return yaml.dump(self._register)
+        return yaml.dump(self.data)

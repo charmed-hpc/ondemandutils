@@ -40,18 +40,18 @@ class OODPortalConfig(BaseModel):
     @property
     def dex(self) -> DexConfig:
         """Get Dex IDP service configuration."""
-        return DexConfig(**self._register["dex"])
+        return DexConfig(**self["dex"])
 
     @dex.setter
     @assert_type(value=DexConfig)
     def dex(self, value: DexConfig) -> None:
         """Set new Dex IDP service configuration."""
-        self._register["dex"] = value.dict()
+        self["dex"] = value.dict()
 
     @dex.deleter
     def dex(self) -> None:
         """Delete Dex IDP service configuration."""
-        self._register["dex"] = {}
+        self["dex"] = {}
 
 
 # Generate descriptors for accessing `ood_portal.yml` configuration options.
