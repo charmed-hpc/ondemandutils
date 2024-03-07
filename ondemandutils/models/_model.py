@@ -87,6 +87,24 @@ class BaseModel(UserDict):
     def __repr__(self):
         return f"{self.__class__.__name__}({', '.join(f'{k}={v}' for k, v in self.items())})"
 
+    def __or__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
+
+        super().__or__(other)
+
+    def __ror__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
+
+        super().__ror__(other)
+
+    def __ior__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(f"Expected `{self.__class__.__name__}`, not {type(other)}.")
+
+        super().__ior__(other)
+
     @classmethod
     def from_dict(cls, dict_obj: Dict[str, Any]):
         """Construct data model object using a dictionary object."""
